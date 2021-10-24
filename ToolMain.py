@@ -25,8 +25,9 @@ def exportfile(window,pwa_app):
         wind = pwa_app.window_(handle=w_handle)
         if "Export Audio" in wind.window_text():
             wind.print_control_identifiers()
+            break
 def sendto():
-    start = pyautogui.locateCenterOnScreen('start.png')
+    start = pyautogui.locateCenterOnScreen('img\start.png')
     print(start)
     pyautogui.doubleClick(start)
 
@@ -37,12 +38,19 @@ def main():
     pwa_app = pywinauto.application.Application(backend="uia")
     pwa_app.connect( path=r"C:\\Program Files\\Cakewalk\\Cakewalk Core\\Cakewalk.exe")
     time.sleep(5)
-    New = pyautogui.locateCenterOnScreen('Click1.png')
+    New = pyautogui.locateCenterOnScreen('img\Click1.png')
     print(New)
     pyautogui.doubleClick(New)
     time.sleep(5)
-    w_handle = pywinauto.findwindows.find_windows(title=u'Cakewalk - [Untitled Project1]')[0] 
-    window = pwa_app.window_(handle=w_handle)
+
+    handles = pywinauto.findwindows.find_windows()
+    for w_handle in handles:
+        wind = pwa_app.window_(handle=w_handle)
+        #print(wind.window_text())
+        if "Cakewalk -" in wind.window_text():
+            window=wind
+            break
+
     importfile(window,'beat.*')
     time.sleep(5)
     #window['Input Echo on Track 1'].click_input()
@@ -50,26 +58,27 @@ def main():
     window.child_window(title=" on Track 2", auto_id="100549", control_type="Button").click_input()
     importfile(window,'Vocal.*')
     time.sleep(5)
-    Autokey = pyautogui.locateCenterOnScreen('Click2.png')
+    Autokey = pyautogui.locateCenterOnScreen('img\Click2.png')
     print(Autokey)
     pyautogui.doubleClick(Autokey)
     pyautogui.press("SPACE")
-    time.sleep(10)
+    time.sleep(20)
     sendto()
     pywinauto.keyboard.send_keys('^a')
     #window.child_window(title="File", control_type="MenuItem").click_input()
     #window.print_control_identifiers()
-    
+    pyautogui.press("SPACE")    
     handles = pywinauto.findwindows.find_windows()
     for w_handle in handles:
         wind = pwa_app.window_(handle=w_handle)
+        #print(wind.window_text())
         if "Auto-Key" in wind.window_text():
-            #wind.print_control_identifiers()
+            wind.print_control_identifiers()
             wind.child_window(title="Close", control_type="Button").click()
+            break
     
-    pyautogui.press("SPACE")
     exportfile(window,pwa_app)
-    time.sleep(200)
+    #time.sleep(200)
 
 main()
 

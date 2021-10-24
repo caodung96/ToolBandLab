@@ -7,7 +7,7 @@ if sys.platform == "win32":
 
 options = {"build_exe": {"includes": "atexit"}}
 
-executables = [Executable("Tool.py", base=base)]
+executables = [Executable("ToolMain.py", base=base)]
 
 setup(
     name="ToolSendBeat",
